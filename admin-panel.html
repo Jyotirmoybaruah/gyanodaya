@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - Assign Subject Links</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 40px;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .back {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .back a {
+      text-decoration: none;
+      color: #007BFF;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Assign Subject Links</h2>
+
+    <label for="dept">Department</label>
+    <select id="dept" onchange="populateSubjects()">
+      <option value="Science">Science</option>
+      <option value="Arts">Arts</option>
+    </select>
+
+    <label for="subject">Select Subject</label>
+    <select id="subject"></select>
+
+    <label for="url">Enter URL to Assign</label>
+    <input type="url" id="url" placeholder="https://example.com" />
+
+    <button onclick="saveLink()">Save Link</button>
+
+    <div class="back">
+      <p><a href="index.html">← Back to Main Page</a></p>
+    </div>
+  </div>
+
+  <script>
+    const subjects = {
+      Science: [
+        "Physics",
+        "Chemistry",
+        "Biology",
+        "Maths",
+        "Geography",
+        "English",
+        "Assamese",
+        "Alternative English"
+      ],
+      Arts: [
+        "English",
+        "History",
+        "Political Science",
+        "Geography",
+        "Alternative English",
+        "Education",
+        "Assamese",
+        "Bihu assamese medium",
+        "Bihu english medium"
+      ]
+    };
+
+    function populateSubjects() {
+      const dept = document.getElementById("dept").value;
+      const subjectSelect = document.getElementById("subject");
+
+      // Clear previous options
+      subjectSelect.innerHTML = "";
+
+      // Populate new options
+      subjects[dept].forEach(subject => {
+        const option = document.createElement("option");
+        option.value = subject;
+        option.textContent = subject;
+        subjectSelect.appendChild(option);
+      });
+    }
+
+    function saveLink() {
+      const dept = document.getElementById("dept").value;
+      const subject = document.getElementById("subject").value;
+      const url = document.getElementById("url").value.trim();
+
+      if (subject && url) {
+        const key = `${dept}_${subject}`;
+        localStorage.setItem(key, url);
+        alert(`✅ Link saved for ${dept} > ${subject}`);
+        document.getElementById("url").value = "";
+      } else {
+        alert("❌ Please select a subject and enter a valid URL.");
+      }
+    }
+
+    // Initial load
+    window.onload = populateSubjects;
+  </script>
+</body>
+</html>
